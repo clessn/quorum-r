@@ -1,56 +1,11 @@
-percent <- function(x, digits = 2, format = "f", ...) {
-    paste0(formatC(100 * x, format = format, digits = digits, ...), "%")
-}
-
-checkRange <- function(value, valueName, min, max)
-{
-    if (value < min || value > max)
-    {
-        stop(paste('Make sure the',valueName,'parameter is between', min, 'and', max))
-    }
-}
-
-padNumber <- function(value, targetLength)
-{
-    while (nchar(value) < targetLength)
-    {
-        value <- paste0('0', value)
-    }
-    return(value)
-}
-
 #' @export
-createDate <- function(day, month, year, hour, minute, second)
-{
-    checkRange(day, 'day', 1, 31)
-    checkRange(month, 'month', 1, 12)
-    checkRange(year, 'year', 1000, 9999)
-
-    checkRange(hour, 'hour', 0, 23)
-    checkRange(minute, 'minute', 0, 59)
-    checkRange(second, 'second', 0, 59)
-
-    day <- padNumber(day, 2)
-    month <- padNumber(month, 2)
-    hour <- padNumber(hour, 2)
-    minute <- padNumber(minute, 2)
-    second <- padNumber(second, 2)
-
-    date <-paste0(year, '-', month, '-', day)
-    time <- paste0(hour, ':', minute, ':', second)
-    result <- list()
-    result$string <- paste(date, time)
-    result$date <- as.POSIXlt(result$string, tz = "", format='%Y-%m-%d %H:%M:%S')
-    return(result)
-}
-
-#' @export
-createAuth <- function(username, password)
+createRadarplusAuth <- function(username, password)
 {
     return(httr::authenticate(username, password))
 }
 
-login <- function()
+#' @export
+radarplusLogin <- function()
 {
     username <- readline(prompt='Username: ')
     password <- readline(prompt='Password: ')
@@ -58,7 +13,7 @@ login <- function()
 }
 
 #' @export
-createQuery <- function(ssouce=NULL, tags=NULL, begin_date=NULL, end_date=NULL,
+createRadarplusQuery <- function(ssouce=NULL, tags=NULL, begin_date=NULL, end_date=NULL,
                         text_contains=NULL, title_contains=NULL, author_contains=NULL)
 {
     query = list()
@@ -98,9 +53,10 @@ createQuery <- function(ssouce=NULL, tags=NULL, begin_date=NULL, end_date=NULL,
 }
 
 #' @export
-loadData <- function(query, auth, url='https://radarplus.clessn.com/article_list')
+loadRadarplusData <- function(query, auth, url='https://radarplus.clessn.com/article_list')
 {
     cat('Loading data\n')
+    start_time <- Sys.time()
     request <- httr::GET(url=url, config=auth, query=query)
     if (request$status_code != 200)
     {
@@ -139,8 +95,9 @@ loadData <- function(query, auth, url='https://radarplus.clessn.com/article_list
         }
     }
 
-
-    cat('\nsuccess')
+    end_time <- Sys.time()
+    cat('\nsuccess with a ')
+    print(end_time - start_time)
     return(data)
 }
 
