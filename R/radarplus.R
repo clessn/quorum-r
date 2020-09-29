@@ -14,7 +14,7 @@ radarplusLogin <- function()
 
 #' @export
 createRadarplusQuery <- function(ssouce=NULL, tags=NULL, begin_date=NULL, end_date=NULL,
-                        text_contains=NULL, title_contains=NULL, author_contains=NULL)
+                        text_contains=NULL, title_contains=NULL, author_contains=NULL, type='text')
 {
     query = list()
     if (!is.null(ssouce))
@@ -49,11 +49,24 @@ createRadarplusQuery <- function(ssouce=NULL, tags=NULL, begin_date=NULL, end_da
         author_contains <- paste(author_contains, collapse=',')
         query$author_contains = author_contains
     }
+    query$type <- type
     return(query)
 }
 
 #' @export
-loadRadarplusData <- function(query, auth, url='https://radarplus.clessn.com/article_list')
+setRadarplusArticleTranslatedText <- function(slug, auth, translated_text, url='https://radarplus.clessn.com/articles')
+{
+    body = list()
+    body$text = translated_text
+    request <- httr::POST(url=paste0(url, '/', slug, '/set_translated_text/'), config=auth, body=body)
+    if (request$status_code != 200)
+    {
+        stop(paste('request failed with a code', request$status_code))
+    }
+}
+
+#' @export
+loadRadarplusData <- function(query, auth, url='https://radarplus.clessn.com/articles')
 {
     cat('Loading data\n')
     start_time <- Sys.time()

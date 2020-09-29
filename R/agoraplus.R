@@ -13,7 +13,7 @@ agoraplusLogin <- function()
 }
 
 #' @export
-createAgoraplusQuery <- function(source=NULL, tags=NULL)
+createAgoraplusQuery <- function(source=NULL, tags=NULL, type='html')
 {
   query = list()
   if (!is.null(source))
@@ -25,11 +25,12 @@ createAgoraplusQuery <- function(source=NULL, tags=NULL)
     tags <- paste(tags, collapse=',')
     query$tags = tags
   }
+  query$type <- type
   return(query)
 }
 
 #' @export
-loadAgoraplusData <- function(query, auth, url='https://radarplus.clessn.com/article_html')
+loadAgoraplusData <- function(query, auth, url='https://radarplus.clessn.com/articles')
 {
   cat('Loading data\n')
   start_time <- Sys.time()
