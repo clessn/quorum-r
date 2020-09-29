@@ -55,8 +55,6 @@ loadAgoraplusData <- function(query, auth, url='https://radarplus.clessn.com/art
     cat(paste0('\r',current_count, '/', item_count, '...', percent(current_count/item_count), '        '))
   }
   
-  data$slug <- NULL
-  
   for (col in colnames(data))
   {
     if (typeof(data[[col]]) == 'character')

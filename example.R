@@ -28,6 +28,8 @@ query <- quorum::createRadarplusQuery(
 result <- quorum::loadRadarplusData(query, auth)
 
 # pour ajouter un texte traduit à un article
+mon_slug <- result$slug[1]
+mon_text <- ''
 quorum::setRadarplusArticleTranslatedText(mon_slug, auth, mon_text)
 
 
@@ -40,5 +42,5 @@ quorum::setRadarplusArticleTranslatedText(mon_slug, auth, mon_text)
 auth <- quorum::agoraplusLogin()
 
 # on crée une requête avec le tag agoraplus. on peut changer type='html' pour 'text' si on veut directement le texte extrait
-query <- quorum::createAgoraplusQuery(tags=c('agoraplus'), type='html') # pour plus de contrôle, on peut générer une query avec createRadarplusQuery à la place
+query <- quorum::createAgoraplusQuery(tags=c('agoraplus'), type='slug') # pour plus de contrôle, on peut générer une query avec createRadarplusQuery à la place
 result <- quorum::loadAgoraplusData(query, auth)

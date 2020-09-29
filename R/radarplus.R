@@ -66,7 +66,7 @@ setRadarplusArticleTranslatedText <- function(slug, auth, translated_text, url='
 }
 
 #' @export
-loadRadarplusData <- function(query, auth, url='https://radarplus.clessn.com/articles')
+loadRadarplusData <- function(query, auth, url='https://radarplus.clessn.com/articles/')
 {
     cat('Loading data\n')
     start_time <- Sys.time()
@@ -98,7 +98,6 @@ loadRadarplusData <- function(query, auth, url='https://radarplus.clessn.com/art
     colnames(data)[length(colnames(data))] <- 'end_date'
     data$earliest_headline <- NULL
     data$latest_headline <- NULL
-    data$slug <- NULL
 
     for (col in colnames(data))
     {
