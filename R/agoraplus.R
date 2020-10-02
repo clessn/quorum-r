@@ -130,6 +130,10 @@ ListAgoraplusTransformedData <- function(auth, url='https://radarplus.clessn.com
     items <- content$results
     data <- suppressWarnings(data.table::rbindlist(items))
     cat(paste('found',item_count,'articles\n'))
+    if (item_count == 0)
+    {
+        return(NULL)
+    }
     current_count <- nrow(data)
     while (current_count != item_count)
     {

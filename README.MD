@@ -56,4 +56,32 @@ query <- quorum::createAgoraplusQuery(tags=c('agoraplus'), type='slug') # pour p
 result <- quorum::loadAgoraplusData(query, auth)
 
 
+
+# ======================================
+##### Publier, modifier et lister les données transformées Agora+ #####
+
+# Même login que radarplus pour l'instant
+auth <- quorum::agoraplusLogin()
+
+# Créer un nouvel objet
+data <- list()
+data$ma_donnee_A <- "potato"
+data$ma_donnee_B <- "tomato"
+quorum::CreateAgoraplusTransformedData(auth, 'mon_slug_de_donnee', data)
+result <- quorum::ListAgoraplusTransformedData(auth)
+print(result[1])
+
+# Modifier un objet
+data <- list()
+data$ma_donnee_A <- 23
+data$ma_donnee_B <- "banana"
+quorum::UpdateAgoraplusTransformedData(auth, 'mon_slug_de_donnee', data)
+result <- quorum::ListAgoraplusTransformedData(auth)
+print(result[1])
+
+# Supprimer un objet
+quorum::DeleteAgoraplusTransformedData(auth, 'mon_slug_de_donnee')
+result <- quorum::ListAgoraplusTransformedData(auth)
+print(result)
+
 ```
