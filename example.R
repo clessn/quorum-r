@@ -44,3 +44,18 @@ auth <- quorum::agoraplusLogin()
 # on crée une requête avec le tag agoraplus. on peut changer type='html' pour 'text' si on veut directement le texte extrait
 query <- quorum::createAgoraplusQuery(tags=c('agoraplus'), type='slug') # pour plus de contrôle, on peut générer une query avec createRadarplusQuery à la place
 result <- quorum::loadAgoraplusData(query, auth)
+
+
+
+# ======================================
+##### Publier, modifier et lister les données transformées Agora+ #####
+
+# Même login que radarplus pour l'instant
+auth <- quorum::agoraplusLogin()
+
+data <- list()
+data$valueA = 56
+data$valueB = 67
+quorum::CreateAgoraplusTransformedData(auth, 'zeta', data)
+quorum::UpdateAgoraplusTransformedData(auth, 'zeta', data)
+result <- quorum::ListAgoraplusTransformedData(auth)
