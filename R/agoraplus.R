@@ -70,7 +70,7 @@ loadAgoraplusData <- function(query, auth, url='https://radarplus.clessn.com/art
 }
 
 #' @export
-CreateAgoraplusTransformedData <- function(auth, slug, data, url='https://radarplus.clessn.com/agora/')
+createAgoraplusTransformedData <- function(auth, slug, data, url='https://radarplus.clessn.com/agora/')
 {
     body <- list()
     body$slug <- slug
@@ -86,7 +86,22 @@ CreateAgoraplusTransformedData <- function(auth, slug, data, url='https://radarp
     }
 }
 
-UpdateAgoraplusTransformedData <- function(auth, slug, data, url='https://radarplus.clessn.com/agora/')
+#' @export
+getAgoraplusTransformedData <- function(auth, slug, url='https://radarplus.clessn.com/agora/')
+{
+    request <- httr::GET(url=url, config=auth)
+    if (request$status_code != 200)
+    {
+        stop(paste('request failed with a code', request$status_code))
+    }
+    else
+    {
+        print('success')
+    }
+    return(httr::content(request)$results[[1]])
+}
+
+updateAgoraplusTransformedData <- function(auth, slug, data, url='https://radarplus.clessn.com/agora/')
 {
     body <- list()
     body$content <- rjson::toJSON(data)
@@ -101,7 +116,7 @@ UpdateAgoraplusTransformedData <- function(auth, slug, data, url='https://radarp
     }
 }
 
-DeleteAgoraplusTransformedData <- function(auth, slug, url='https://radarplus.clessn.com/agora/')
+deleteAgoraplusTransformedData <- function(auth, slug, url='https://radarplus.clessn.com/agora/')
 {
     request <- httr::DELETE(url=paste0(url, slug, '/'), config=auth)
     if (request$status_code != 204)
@@ -115,7 +130,7 @@ DeleteAgoraplusTransformedData <- function(auth, slug, url='https://radarplus.cl
 }
 
 #' @export
-ListAgoraplusTransformedData <- function(auth, url='https://radarplus.clessn.com/agora/')
+listAgoraplusTransformedData <- function(auth, url='https://radarplus.clessn.com/agora/')
 {
     cat('Loading data\n')
     start_time <- Sys.time()

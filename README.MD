@@ -67,21 +67,25 @@ auth <- quorum::agoraplusLogin()
 data <- list()
 data$ma_donnee_A <- "potato"
 data$ma_donnee_B <- "tomato"
-quorum::CreateAgoraplusTransformedData(auth, 'mon_slug_de_donnee', data)
-result <- quorum::ListAgoraplusTransformedData(auth)
+quorum::createAgoraplusTransformedData(auth, 'mon_slug_de_donnee', data)
+result <- quorum::listAgoraplusTransformedData(auth)
 print(result[1])
 
 # Modifier un objet
 data <- list()
 data$ma_donnee_A <- 23
 data$ma_donnee_B <- "banana"
-quorum::UpdateAgoraplusTransformedData(auth, 'mon_slug_de_donnee', data)
-result <- quorum::ListAgoraplusTransformedData(auth)
+quorum::updateAgoraplusTransformedData(auth, 'mon_slug_de_donnee', data)
+result <- quorum::listAgoraplusTransformedData(auth)
 print(result[1])
 
 # Supprimer un objet
-quorum::DeleteAgoraplusTransformedData(auth, 'mon_slug_de_donnee')
-result <- quorum::ListAgoraplusTransformedData(auth)
+quorum::deleteAgoraplusTransformedData(auth, 'mon_slug_de_donnee')
+result <- quorum::listAgoraplusTransformedData(auth)
 print(result)
+
+# Valider si un objet existe
+result <- quorum::getAgoraplusTransformedData(auth, 'mon_slug_de_donnee')
+
 
 ```
