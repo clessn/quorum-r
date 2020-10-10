@@ -89,16 +89,31 @@ createAgoraplusTransformedData <- function(auth, slug, data, url='https://radarp
 #' @export
 getAgoraplusTransformedData <- function(auth, slug, url='https://radarplus.clessn.com/agora/')
 {
-    request <- httr::GET(url=url, config=auth)
+    request <- httr::GET(url=paste0(url, slug, '/'), config=auth)
+    if (request$status_code == 404)
+    {
+        print('object not found')
+        return(NULL)
+    }
+
     if (request$status_code != 200)
     {
         stop(paste('request failed with a code', request$status_code))
     }
-    else
+    print('success')
+
+    obj <- httr::content(request)
+    data <- data.table::data.table()
+
+
+    content <- as.list(rjson::fromJSON(obj$content))
+    content <- c(obj, content)
+    for (name in names(content))
     {
-        print('success')
+        data[1, name] <- content[name]
     }
-    return(httr::content(request)$results[[1]])
+
+    return(data)
 }
 
 updateAgoraplusTransformedData <- function(auth, slug, data, url='https://radarplus.clessn.com/agora/')
@@ -152,7 +167,7 @@ listAgoraplusTransformedData <- function(auth, url='https://radarplus.clessn.com
     current_count <- nrow(data)
     while (current_count != item_count)
     {
-        result <- loadPage(auth, next_page, data)
+        result <- loadPage(auth, url=next_page, data)
         data <- result$data
         content <- rjson::fromJSON(result$data$content)
         next_page <- result$next_page
